@@ -385,7 +385,7 @@ export default class SortableGridView extends Component {
     }
   }
 
-  _onLongPressItems = (key, index) => {
+  _onLongPressItems = (key, index, item) => {
     return () => {
       this.setState({
         selectIndex: index,
@@ -394,7 +394,7 @@ export default class SortableGridView extends Component {
       this.positionIndex = index;
       this.currentAnchor = `moveAnimate${key}`;
       this.currentAnchorKey = key
-      this.props.onDragStart && this.props.onDragStart(false);
+      this.props.onDragStart && this.props.onDragStart(item);
       this.panCapture = true;
       Animated.timing(
         this[`selectAnimation${this.currentAnchorKey}`],
@@ -442,7 +442,7 @@ export default class SortableGridView extends Component {
                 >
                   <TouchableWithoutFeedback style={styles.flex}
                     // delayLongPress={1000}
-                    onLongPress={this._onLongPressItems(key, index)}
+                    onLongPress={this._onLongPressItems(key, index, item)}
                     onPress={() => {
                       customTap(item, index);
                     }}
