@@ -442,7 +442,7 @@ export default class SortableGridView extends Component {
                 >
                   <TouchableWithoutFeedback style={styles.flex}
                     // delayLongPress={1000}
-                    onLongPress={this._onLongPressItems(key, index, item)}
+                    onLongPress={!isNaN(item?.id) ? this._onLongPressItems(key, index, item) : () => {}}
                     onPress={() => {
                       customTap(item, index);
                     }}
