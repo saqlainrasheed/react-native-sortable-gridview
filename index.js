@@ -135,7 +135,7 @@ export default class SortableGridView extends Component {
 
       this.setState({
         ...this.state,
-        data,
+        data: nextProps.data,
         lockData: nextProps.lockData || this.state.lockData,
         numPerRow: nextProps.numPerRow || this.state.numPerRow,
         aspectRatio: nextProps.aspectRatio || this.state.aspectRatio,
@@ -429,6 +429,7 @@ export default class SortableGridView extends Component {
                   this.moveAnimate = false;
                 }
               }
+
               return [
                 <Animated.View
                   {...this.panResponder.panHandlers}
