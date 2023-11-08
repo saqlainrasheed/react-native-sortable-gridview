@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/ge6285790/react-native-sortable-gridview#readme",
   "dependencies": {
-    "react-fast-compare": "^2.0.4"
+    "react-fast-compare": "^2.0.4",
+    "react-native-invertible-scroll-view" : "2.0.0"
   }
 }
