@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef, useRef } from 'react';
 
 import {
   StyleSheet,
@@ -42,6 +42,8 @@ export default class SortableGridView extends Component {
     perWidth: 0,
     perHeight: 0,
     layoutWidth: 0,
+
+    // scrollRef: createRef(),
 
     data: this.props.data || [],
     lockData: this.props.lockData || [],
@@ -89,6 +91,7 @@ export default class SortableGridView extends Component {
     this.currentAnchorAnimation;
     this.positions = [];
     this.animateArray = [];
+    this.scrollRef= createRef();
     this.panCapture = false;
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
@@ -181,11 +184,22 @@ export default class SortableGridView extends Component {
 
   onMoveBlock = (evt, gestureState) => {
     // this.clearTimer();
+    console.log('started-scroll', this?.scrollRef?.current?.scrollTo)
+    this?.scrollRef?.current?.scrollTo({
+      x: 0, 
+      y:400, 
+      animated:true
+    })
+
+
     const { dx, dy, vx, vy } = gestureState;
-    this[this.currentAnchor].setValue({ x: dx + this.tempX, y: dy + this.tempY})
+    this[this.currentAnchor].setValue({ x: dx + this.tempX, y: dy + this.tempY + 400})
     if (Math.abs(vx) < 0.2 && Math.abs(vy) < 0.2) {
       return;
     }
+
+
+    this
 
     this._caluIndex(dx + this.tempX, dy + this.tempY);
     // this.setTimer(dx + this.tempX, dy + this.tempY);
@@ -412,7 +426,7 @@ export default class SortableGridView extends Component {
     const { contentStyle = {}, style = {}, itemCoverStyle = {}, lockItemCoverStyle = {}, headerComponent = () => {return null;}, footerComponent = () => {return null;} } = this.props;
     const allData = [...this.state.data, ...this.state.lockData];
     return (
-      <ScrollView style={[styles.fullWidth, style]} onLayout={this._containerOnLayout} scrollEnabled={this.state.scrollable} showsVerticalScrollIndicator={false}>
+      <ScrollView ref={this.scrollRef} scrollEventThrottle={60} style={[styles.fullWidth, style]} onLayout={this._containerOnLayout} scrollEnabled={this.state.scrollable} showsVerticalScrollIndicator={false}>
         {headerComponent()}
         <View style={[{paddingTop, paddingBottom, paddingLeft, paddingRight}, this.state.contentStyle, contentStyle]}>
           {this.positions && this.positions.length === allData.length &&
